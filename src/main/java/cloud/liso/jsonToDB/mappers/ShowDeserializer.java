@@ -5,7 +5,6 @@ import cloud.liso.jsonToDB.model.Schedule;
 import cloud.liso.jsonToDB.model.Show;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ShowDeserializer {
 
     public Show getShow(JsonNode show) {
         return Show.builder()
-                .id(utils.getIntOrDefault(show, "id"))
+                .tvmazeId(utils.getIntOrDefault(show, "id"))
                 .tvMaze(utils.getOrDefault(show, "url"))
                 .name(utils.getOrDefault(show, "name"))
                 .type(utils.getOrDefault(show, "type"))
@@ -37,26 +36,35 @@ public class ShowDeserializer {
                 .officialSite(utils.getOrDefault(show, "officialSite"))
                 .schedule(getScheduleDto(show))
                 .imdb(utils.getImdbUrl(show))
+                .rating(getRaitingOrDefault(show))
                 .image(utils.getImageOrDefault(show))
                 .summary(utils.getSummaryJson(show))
                 .build();
     }
 
+    private double getRaitingOrDefault(JsonNode show) {
+        JsonNode rating = show.get("rating");
+        if (rating == null) return 0.0;
+        JsonNode average = rating.get("average");
+        if (average == null) return 0.0;
+        return average.asDouble();
+    }
+
     private Schedule getScheduleDto(JsonNode node) {
         JsonNode scheduleJson = node.get("schedule");
         if (scheduleJson == null) return Schedule.of(new ArrayList<>(), LocalTime.of(00, 00));
-        List<DayOfWeek> dayOfWeeks = extractDays(scheduleJson);
+        List<Integer> dayOfWeeks = extractDays(scheduleJson);
         LocalTime time = extractTime(scheduleJson);
         return Schedule.of(dayOfWeeks, time);
     }
 
-    private List<DayOfWeek> extractDays(JsonNode scheduleJson) {
-        List<DayOfWeek> dayOfWeeks = new ArrayList<>();
+    private List<Integer> extractDays(JsonNode scheduleJson) {
+        List<Integer> dayOfWeeks = new ArrayList<>();
 
         JsonNode daysNode = scheduleJson.get("days");
         if (daysNode != null) {
             for (JsonNode jsonNode : daysNode) {
-                dayOfWeeks.add(DayOfWeek.valueOf(jsonNode.asText().toUpperCase()));
+                dayOfWeeks.add(utils.getDayOrDefault(jsonNode));
             }
         }
         return dayOfWeeks;

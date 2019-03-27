@@ -31,10 +31,9 @@ public class SeasonDeserializer {
     private Season getSeasonDto(JsonNode season) {
         List<Episode> episodes = episodeDeserializer.getEpisodes(season);
         return Season.builder()
-                .id(utils.getIntOrDefault(season, "id"))
+                .tvmazeId(utils.getIntOrDefault(season, "id"))
                 .tvMaze(utils.getOrDefault(season, "url"))
                 .number(utils.getIntOrDefault(season, "number"))
-                .name(utils.getOrDefault(season, "name"))
                 .episodeOrder(utils.getIntOrDefault(season, "episodeOrder"))
                 .premiereDate(utils.getDateOrDefault(season, "premiereDate"))
                 .endDate(utils.getDateOrDefault(season, "endDate"))

@@ -1,15 +1,23 @@
 package cloud.liso.jsonToDB.mappers;
 
+import cloud.liso.jsonToDB.model.DayOfWeek;
+
 public class DeserializerFactory {
+    private final ShowDeserializer showDeserializer;
+    private final SeasonDeserializer seasonsDeserializer;
 
-    private static final ShowDeserializer showDeserializer = new ShowDeserializer(new DeserializerUtils());
-    private static final SeasonDeserializer seasonsDeserializer = new SeasonDeserializer(new DeserializerUtils(), new EpisodeDeserializer(new DeserializerUtils()));
+    public DeserializerFactory() {
+        DayOfWeek dayOfWeek = new DayOfWeek();
+        DeserializerUtils utils = new DeserializerUtils(dayOfWeek);
+        showDeserializer = new ShowDeserializer(utils);
+        seasonsDeserializer = new SeasonDeserializer(utils, new EpisodeDeserializer(utils));
+    }
 
-    public static ShowDeserializer createShowDeserializer() {
+    public ShowDeserializer createShowDeserializer() {
         return showDeserializer;
     }
 
-    public static SeasonDeserializer createSeasonDeserializer() {
+    public SeasonDeserializer createSeasonDeserializer() {
         return seasonsDeserializer;
     }
 }

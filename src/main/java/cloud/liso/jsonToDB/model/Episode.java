@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class Episode {
     private int id;
+    private int tvmazeId;
     private String name;
     private int number;
     private LocalDate airdate;

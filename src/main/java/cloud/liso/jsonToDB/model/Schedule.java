@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -13,15 +12,15 @@ import java.util.List;
 @AllArgsConstructor
 public class Schedule {
     private int id;
-    private List<DayOfWeek> days;
+    private List<Integer> days;
     private LocalTime time;
 
-    public Schedule(List<DayOfWeek> days, LocalTime time) {
+    public Schedule(List<Integer> days, LocalTime time) {
         this.days = days;
         this.time = time;
     }
 
-    public static Schedule of(List<DayOfWeek> days, LocalTime time) {
+    public static Schedule of(List<Integer> days, LocalTime time) {
         return new Schedule(days, time);
     }
 }

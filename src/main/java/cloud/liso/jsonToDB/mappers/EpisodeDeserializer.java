@@ -27,7 +27,7 @@ public class EpisodeDeserializer {
 
     private Episode getEpisodeDto(JsonNode episode) {
         return Episode.builder()
-                .id(utils.getIntOrDefault(episode, "id"))
+                .tvmazeId(utils.getIntOrDefault(episode, "id"))
                 .tvMaze(utils.getOrDefault(episode, "url"))
                 .name(utils.getOrDefault(episode, "name"))
                 .number(utils.getIntOrDefault(episode, "number"))

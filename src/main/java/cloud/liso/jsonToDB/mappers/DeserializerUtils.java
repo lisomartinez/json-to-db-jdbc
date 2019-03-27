@@ -1,5 +1,6 @@
 package cloud.liso.jsonToDB.mappers;
 
+import cloud.liso.jsonToDB.model.DayOfWeek;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.LocalDate;
@@ -13,6 +14,12 @@ public class DeserializerUtils {
     private final static Pattern pattern = Pattern.compile("(<.+?>)");
 
     private static final String DEFAULT = "N/A";
+
+    private DayOfWeek dayOfWeek;
+
+    public DeserializerUtils(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
 
     public int getIntOrDefault(JsonNode node, String name) {
         JsonNode field = node.get(name);
@@ -53,7 +60,7 @@ public class DeserializerUtils {
         if (imageNode == null) {
             image = "N/A";
         } else {
-            JsonNode originalImage = imageNode.get("original");
+            JsonNode originalImage = imageNode.get("medium");
 
             if (originalImage != null) {
                 image = originalImage.asText();
@@ -84,5 +91,10 @@ public class DeserializerUtils {
             Matcher matcher = pattern.matcher(summaryJson);
             return matcher.replaceAll("");
         }
+    }
+
+    public int getDayOrDefault(JsonNode day) {
+        if (day == null || day.asText().isEmpty()) return dayOfWeek.getDayId("None");
+        return dayOfWeek.getDayId(day.asText());
     }
 }
