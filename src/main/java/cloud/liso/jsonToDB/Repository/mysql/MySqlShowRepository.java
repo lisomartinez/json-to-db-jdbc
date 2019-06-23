@@ -13,11 +13,11 @@ public class MySqlShowRepository implements ShowRepository {
     private static final String FIND_BY_NAME = "SELECT * FROM `show` WHERE `show`.name = ?";
 
     private static final String SAVE = "INSERT INTO " +
-            "`show`(tvmaze_id, name, type, status, language, premiered, runtime, " +
+            "shows(tvmaze_id, name, type, status, language, premiered, runtime, " +
             "schedule_id, image_url, imdb_url, official_site_url, tv_maze_url, summary, last_update, rating)" +
             " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SAVE_SHOW_GENRE = "INSERT INTO show_genre(show_id, genre_id) VALUES(?,?)";
+    private static final String SAVE_SHOW_GENRE = "INSERT INTO show_genre(shows_show_id, genres_genre_id) VALUES(?,?)";
 
     private final Connection connection;
 
@@ -47,25 +47,26 @@ public class MySqlShowRepository implements ShowRepository {
 
             save.executeUpdate();
 
-                try (ResultSet generatedKeys = save.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        show.setId(generatedKeys.getInt(1));
-                    } else {
-                        throw new SQLException("Creating Show failed, no ID obtained.");
-                    }
+            try (ResultSet generatedKeys = save.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    show.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Creating Show failed, no ID obtained.");
                 }
-
-                List<Genre> genres = show.getGenres();
-                PreparedStatement saveShowGenres = connection.prepareStatement(SAVE_SHOW_GENRE);
-                saveShowGenres.setInt(1, show.getId());
-                for (Genre genre : genres) {
-                    saveShowGenres.setInt(2, genre.getId());
-                    saveShowGenres.executeUpdate();
-                }
-
-            } catch (SQLException e) {
-                System.out.println("Creating Show failed -> " + e.getMessage());
             }
+
+            List<Genre> genres = show.getGenres();
+            PreparedStatement saveShowGenres = connection.prepareStatement(SAVE_SHOW_GENRE);
+            saveShowGenres.setInt(1, show.getId());
+            for (Genre genre : genres) {
+                saveShowGenres.setInt(2, genre.getId());
+                saveShowGenres.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Creating Show failed -> " + e.getMessage());
+        }
+        System.out.println("show = [" + show + "]");
         return show;
     }
 }

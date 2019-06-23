@@ -7,8 +7,8 @@ import cloud.liso.jsonToDB.model.Genre;
 import java.sql.*;
 
 public class MysqlGenreRepository implements GenreRepository {
-    private static final String FIND_BY_NAME = "SELECT * FROM genre WHERE name = ?";
-    private static final String SAVE = "INSERT INTO genre(name) VALUES(?)";
+    private static final String FIND_BY_NAME = "SELECT * FROM genres WHERE name = ?";
+    private static final String SAVE = "INSERT INTO genres(name) VALUES(?)";
     private final Connection connection;
 
     public MysqlGenreRepository() {

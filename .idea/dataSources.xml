@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="show-service-dev@localhost" uuid="b35129ab-e8b5-4271-811a-5c8fa6666090">
+    <data-source source="LOCAL" name="liflix-dev@localhost" uuid="6ceca5df-baee-4d9e-bfe5-856d9bc50369">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/show-service-dev</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/liflix-dev</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="CONVERT_TO_NULL" />

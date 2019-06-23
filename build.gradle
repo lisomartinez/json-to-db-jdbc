@@ -66,6 +66,11 @@ task alltest(type: Test) {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'cloud.liso.jsonToDB.Main'
+        attributes(
+                'Main-Class': 'cloud.liso.jsonToDB.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }

@@ -35,7 +35,7 @@ public class Batch {
 
 
     public void run() {
-        try (Stream<Path> paths = Files.walk(Paths.get("/home/liso/Documents/show/page0.json"))) {
+        try (Stream<Path> paths = Files.walk(Paths.get("/home/liso/Documents/bkp/Dropbox/workspaces/java/jsonToDB/src/main/resources/page0.json"))) {
             List<Show> shows = paths.filter(Files::isRegularFile).flatMap(this::parseShow).map(this::saveShow).collect(Collectors.toList());
         } catch (IOException e1) {
             e1.printStackTrace();
